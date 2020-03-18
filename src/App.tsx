@@ -42,7 +42,12 @@ const App: React.FC = () => {
   return (
     <Wrapper>
       <form onSubmit={e => onSubmit(e)}>
-        <Input type="text" placeholder="set username" onChange={e => setUValue(e.target.value)} />
+        <Input
+          type="text"
+          placeholder="set username"
+          value={u_value}
+          onChange={e => setUValue(e.target.value)}
+        />
         <Submit type="submit" value="送信" />
       </form>
       {data.map((d: any) => (
