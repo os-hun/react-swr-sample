@@ -28,7 +28,6 @@ const App: React.FC = () => {
     </Container>
   );
 
-
   if(!data) return (
     <Container>
       <Loading />
