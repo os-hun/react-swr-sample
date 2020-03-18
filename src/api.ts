@@ -1,6 +1,5 @@
 const main = 'https://api.github.com';
 
-export const URepo = (username: string) => {
-  const api = main + `/users/${username}/repos`;
-  return api
+export const fetch_u_repos = (username: string) => {
+  return `${main}/users/${username}/repos`;
 };
