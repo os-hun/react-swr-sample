@@ -3,16 +3,17 @@ import useSWR from 'swr';
 import styled from 'styled-components';
 import { fetch_u_repos } from './api';
 
-const fetcher = (
-  url: string
-) =>
-  fetch(url)
-    .then(r => r.json())
-    .catch(e => e);
-
 const App: React.FC = () => {
   const [u_value, setUValue] = useState('facebook');
   const [username, setUserName] = useState('facebook');
+
+  const fetcher = (
+    url: string
+  ) =>
+    fetch(url)
+      .then(r => r.json())
+      .catch(e => e);
+
   const { data, error } = useSWR(fetch_u_repos(username), fetcher);
   const message = data && ( data.message );
 
@@ -51,7 +52,7 @@ const App: React.FC = () => {
         <Submit type="submit" value="送信" />
       </form>
       {data.map((d: any) => (
-        <Link href={`${d.full_name}`} target="_blank" key={d.id} rel="noopener noreferrer">
+        <Link href={`https://github.com/${d.full_name}`} target="_blank" key={d.id} rel="noopener noreferrer">
           {d.full_name}
         </Link>
       ))}
