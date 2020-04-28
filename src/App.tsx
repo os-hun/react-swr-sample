@@ -1,61 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useSWR from 'swr';
 import styled from 'styled-components';
-import { fetch_u_repos } from './api';
+import { fetch_tweet, TwitterInstance } from './api';
 
 const App: React.FC = () => {
-  const [u_value, setUValue] = useState('facebook');
-  const [username, setUserName] = useState('facebook');
+  // const fetcher = (
+  //   url: string
+  // ) =>
+  //   fetch(url)
+  //     .then(r => r.json())
+  //     .catch(e => e);
 
-  const fetcher = (
-    url: string
-  ) =>
-    fetch(url)
-      .then(r => r.json())
-      .catch(e => e);
+  // const { data, error } = useSWR(fetch_tweet, fetcher);
+  // const message = data && ( data.message );
+  // console.log(data);
 
-  const { data, error } = useSWR(fetch_u_repos(username), fetcher);
-  const message = data && ( data.message );
+  // if(error) return (
+  //   <Container>
+  //     <Error>failed to load</Error>
+  //   </Container>
+  // );
 
-  if(error) return (
-    <Container>
-      <Error>failed to load</Error>
-    </Container>
-  );
+  // if(message) return (
+  //   <Container>
+  //     <Error>{data.message}</Error>
+  //   </Container>
+  // );
 
-  if(message) return (
-    <Container>
-      <Error>{data.message}</Error>
-    </Container>
-  );
-
-  if(!data) return (
-    <Container>
-      <Loading />
-    </Container>
-  );
-
-  const onSubmit = (e: any) => {
-    setUserName(u_value);
-    e.preventDefault()
-  };
+  // if(!data) return (
+  //   <Container>
+  //     <Loading />
+  //   </Container>
+  // );
+  
+  const onclickFetch = async () => {
+    return await TwitterInstance.get("/search/tweets.json", {
+      params: {
+        q: "RTキャンペーン%20OR%20懸賞",
+        result_type: 'recent',
+        count: 100,
+      },
+    }).then(function (res) {
+      console.log(res);
+    }).catch(function (e) {
+      console.log(e);
+    });
+  }
 
   return (
     <Wrapper>
-      <form onSubmit={e => onSubmit(e)}>
-        <Input
-          type="text"
-          placeholder="set username"
-          value={u_value}
-          onChange={e => setUValue(e.target.value)}
-        />
-        <Submit type="submit" value="送信" />
-      </form>
-      {data.map((d: any) => (
-        <Link href={`https://github.com/${d.full_name}`} target="_blank" key={d.id} rel="noopener noreferrer">
-          {d.full_name}
-        </Link>
-      ))}
+      <p>twitter api 検証</p>
+      <button onClick={async () => await onclickFetch()}>
+        fetch
+      </button>
     </Wrapper>
   )
 };
